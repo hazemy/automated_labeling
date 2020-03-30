@@ -2,6 +2,7 @@
 import pcl
 from pcl.pcl_visualization import *
 from pyquaternion import Quaternion
+import numpy as np
 
 
 def main():
@@ -58,7 +59,7 @@ def main():
     #                max_point_AABB.y, min_point_AABB.z, max_point_AABB.z, 1.0, 1.0, 0.0, "AABB")
     # print(min_point_AABB)
     viewer.AddCube(min_point_AABB[0][0], max_point_AABB[0][0], min_point_AABB[0][1],
-                    max_point_AABB[0][1], min_point_AABB[0][2], max_point_AABB[0][2], 1.0, 1.0, 0.0, "AABB")
+                    max_point_AABB[0][1], min_point_AABB[0][2], max_point_AABB[0][2], 0.0, 0.0, 1.0, "AABB")
 
     # Eigen::Vector3f position (position_OBB.x, position_OBB.y, position_OBB.z);
     # Eigen::Quaternionf quat (rotational_matrix_OBB);
@@ -66,9 +67,16 @@ def main():
 
     #print(rotational_matrix_OBB)
     quat = Quaternion(matrix=rotational_matrix_OBB)
-    viewer.AddCube(position_OBB, quat, max_point_OBB[0][0] - min_point_OBB[0][0], max_point_OBB[0][1] - min_point_OBB[0][1],\
-         max_point_OBB[0][2] - min_point_OBB[0][2], 1.0, 1.0, 0.0, "OBB")
-    viewer.AddCube()
+    # viewer.AddCube(position_OBB, quat, max_point_OBB[0][0] - min_point_OBB[0][0], max_point_OBB[0][1] - min_point_OBB[0][1],\
+    #      max_point_OBB[0][2] - min_point_OBB[0][2], 1.0, 1.0, 0.0, "OBB")
+    min_point_OBB_mod = rotational_matrix_OBB.dot(np.transpose(min_point_OBB + position_OBB))
+    max_point_OBB_mod = rotational_matrix_OBB.dot(np.transpose(max_point_OBB + position_OBB))
+    #print(rotational_matrix_OBB)
+    #print(np.transpose(min_point_OBB + position_OBB))
+    print(min_point_OBB_mod)
+    print(max_point_OBB_mod)
+    viewer.AddCube(min_point_OBB_mod[0][0], max_point_OBB_mod[0][0], min_point_OBB_mod[1][0],
+                    max_point_OBB_mod[1][0], min_point_OBB_mod[2][0], max_point_OBB_mod[2][0], 1.0, 1.0, 0.0, "OBB")
 
     # pcl::PointXYZ center (mass_center (0), mass_center (1), mass_center (2));
     # pcl::PointXYZ x_axis (major_vector (0) + mass_center (0), major_vector (1) + mass_center (1), major_vector (2) + mass_center (2));
@@ -77,13 +85,15 @@ def main():
     # viewer->addLine (center, x_axis, 1.0f, 0.0f, 0.0f, "major eigen vector");
     # viewer->addLine (center, y_axis, 0.0f, 1.0f, 0.0f, "middle eigen vector");
     # viewer->addLine (center, z_axis, 0.0f, 0.0f, 1.0f, "minor eigen vector");
-    center = pcl.PointCloud(mass_center[0], mass_center[1], mass_center[2])
-    x_axis = pcl.PointCloud(
-        major_vector[0] + mass_center[0], major_vector[1] + mass_center[1], major_vector[2] + mass_center[2])
-    y_axis = pcl.PointCloud(middle_vector[0] + mass_center[0],
-                            middle_vector[1] + mass_center[1], middle_vector[2] + mass_center[2])
-    z_axis = pcl.PointCloud(
-        minor_vector[0] + mass_center[0], minor_vector[1] + mass_center[1], minor_vector[2] + mass_center[2])
+
+    # center = pcl.PointCloud(mass_center[0], mass_center[1], mass_center[2])
+    # x_axis = pcl.PointCloud(
+    #     major_vector[0] + mass_center[0], major_vector[1] + mass_center[1], major_vector[2] + mass_center[2])
+    # y_axis = pcl.PointCloud(middle_vector[0] + mass_center[0],
+    #                         middle_vector[1] + mass_center[1], middle_vector[2] + mass_center[2])
+    # z_axis = pcl.PointCloud(
+    #     minor_vector[0] + mass_center[0], minor_vector[1] + mass_center[1], minor_vector[2] + mass_center[2])
+
     #viewer.AddLine(center, x_axis, 1.0f, 0.0f, 0.0f, "major eigen vector")
     #viewer.AddLine(center, y_axis, 0.0f, 1.0f, 0.0f, "middle eigen vector")
     #viewer.AddLine(center, z_axis, 0.0f, 0.0f, 1.0f, "minor eigen vector")
@@ -94,9 +104,10 @@ def main():
     #     boost::this_thread::sleep (boost::posix_time::microseconds (100000));
     # }
     viewer.Spin()
-    v = true
+    v = True
     while v:
-        v = not(visual.WasStopped())
+        v = not(viewer.WasStopped())
+    viewer.Close()
         # visual.spinOnce (100)
         # boost::this_thread::sleep (boost::posix_time::microseconds (100000));
 
