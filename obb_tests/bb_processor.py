@@ -50,8 +50,11 @@ def main():
     ###
     viewer = pcl.pcl_visualization.PCLVisualizering()
     viewer.SetBackgroundColor(0, 0, 0)
-    viewer.AddCoordinateSystem(0.2)
-    viewer.AddPointCloud(pc)
+    viewer.AddCoordinateSystem(1.0)
+    viewer.SetPointCloudRenderingProperties(pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 17, bytes(0))
+    pccolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(pc, 255,255,255)
+    viewer.AddPointCloud_ColorHandler(pc, pccolor, bytes(0))
+    #viewer.AddPointCloud(pc)
     # viewer->InitCameraParameters()
     # viewer->AddPointCloud (cloud, 'sample cloud', 0)
     # viewer->AddPointCloud(cloud)
@@ -60,23 +63,52 @@ def main():
     # print(min_point_AABB)
     viewer.AddCube(min_point_AABB[0][0], max_point_AABB[0][0], min_point_AABB[0][1],
                     max_point_AABB[0][1], min_point_AABB[0][2], max_point_AABB[0][2], 0.0, 0.0, 1.0, "AABB")
+    
+    min_point_OBB_x = min_point_OBB[0][0]
+    min_point_OBB_y = min_point_OBB[0][1]
+    min_point_OBB_z = min_point_OBB[0][2]
+    max_point_OBB_x = max_point_OBB[0][0]
+    max_point_OBB_y = max_point_OBB[0][1]
+    max_point_OBB_z = max_point_OBB[0][2]
+
+    corner_1 = min_point_OBB[0]
+    corner_2 = [min_point_OBB_x, max_point_OBB_y, min_point_OBB_z]
+    corner_3 = [min_point_OBB_x, max_point_OBB_y, max_point_OBB_z]
+    corner_4 = [min_point_OBB_x, min_point_OBB_y, max_point_OBB_z]
+    corner_5 = [max_point_OBB_x, min_point_OBB_y, min_point_OBB_z]
+    corner_6 = [max_point_OBB_x, max_point_OBB_y, min_point_OBB_z]
+    corner_7 = max_point_OBB[0]
+    corner_8 = [max_point_OBB_x, min_point_OBB_y, max_point_OBB_z]
+    
+    corners = np.array([corner_1, corner_2, corner_3, corner_4, corner_5, corner_6, corner_7, corner_8]).reshape((8,3))
+    print('corners = {}'.format(corners))
+    corners_rot = np.matmul(corners, rotational_matrix_OBB)
+    print('corners_rot = {}'.format(corners_rot))
+    corners_obb = corners_rot + position_OBB
+    print('position obb = {}'.format(position_OBB))
+    print('corners_obb = {}'.format(corners_obb))
+
+    obb = pcl.PointCloud(corners_obb)
+    viewer.SetPointCloudRenderingProperties(pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 17, bytes(1))
+    pccolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(obb, 0,255,0)
+    viewer.AddPointCloud_ColorHandler(obb, pccolor, bytes(4))
 
     # Eigen::Vector3f position (position_OBB.x, position_OBB.y, position_OBB.z);
     # Eigen::Quaternionf quat (rotational_matrix_OBB);
     # viewer->addCube (position, quat, max_point_OBB.x - min_point_OBB.x, max_point_OBB.y - min_point_OBB.y, max_point_OBB.z - min_point_OBB.z, "OBB");
 
     #print(rotational_matrix_OBB)
-    quat = Quaternion(matrix=rotational_matrix_OBB)
+    #quat = Quaternion(matrix=rotational_matrix_OBB)
     # viewer.AddCube(position_OBB, quat, max_point_OBB[0][0] - min_point_OBB[0][0], max_point_OBB[0][1] - min_point_OBB[0][1],\
     #      max_point_OBB[0][2] - min_point_OBB[0][2], 1.0, 1.0, 0.0, "OBB")
-    min_point_OBB_mod = rotational_matrix_OBB.dot(np.transpose(min_point_OBB + position_OBB))
-    max_point_OBB_mod = rotational_matrix_OBB.dot(np.transpose(max_point_OBB + position_OBB))
+    #min_point_OBB_mod = rotational_matrix_OBB.dot(np.transpose(min_point_OBB + position_OBB))
+    #max_point_OBB_mod = rotational_matrix_OBB.dot(np.transpose(max_point_OBB + position_OBB))
     #print(rotational_matrix_OBB)
     #print(np.transpose(min_point_OBB + position_OBB))
-    print(min_point_OBB_mod)
-    print(max_point_OBB_mod)
-    viewer.AddCube(min_point_OBB_mod[0][0], max_point_OBB_mod[0][0], min_point_OBB_mod[1][0],
-                    max_point_OBB_mod[1][0], min_point_OBB_mod[2][0], max_point_OBB_mod[2][0], 1.0, 1.0, 0.0, "OBB")
+    #print(min_point_OBB_mod)
+    #print(max_point_OBB_mod)
+    #viewer.AddCube(min_point_OBB_mod[0][0], max_point_OBB_mod[0][0], min_point_OBB_mod[1][0],
+    #               max_point_OBB_mod[1][0], min_point_OBB_mod[2][0], max_point_OBB_mod[2][0], 1.0, 1.0, 0.0, "OBB")
 
     # pcl::PointXYZ center (mass_center (0), mass_center (1), mass_center (2));
     # pcl::PointXYZ x_axis (major_vector (0) + mass_center (0), major_vector (1) + mass_center (1), major_vector (2) + mass_center (2));
