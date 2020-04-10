@@ -3,7 +3,7 @@ import pcl
 from pcl.pcl_visualization import *
 from pyquaternion import Quaternion
 import numpy as np
-
+import open3d as o3d
 
 def main():
     points = [[1,2,3], [5,3,6], [6,4,3], [3,7,2], [2,3,1], [4,5,6]]
@@ -54,6 +54,7 @@ def main():
     viewer.SetPointCloudRenderingProperties(pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 17, bytes(0))
     pccolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(pc, 255,255,255)
     viewer.AddPointCloud_ColorHandler(pc, pccolor, bytes(0))
+
     #viewer.AddPointCloud(pc)
     # viewer->InitCameraParameters()
     # viewer->AddPointCloud (cloud, 'sample cloud', 0)
@@ -71,16 +72,16 @@ def main():
     max_point_OBB_y = max_point_OBB[0][1]
     max_point_OBB_z = max_point_OBB[0][2]
 
-    corner_1 = min_point_OBB[0]
-    corner_2 = [min_point_OBB_x, max_point_OBB_y, min_point_OBB_z]
-    corner_3 = [min_point_OBB_x, max_point_OBB_y, max_point_OBB_z]
-    corner_4 = [min_point_OBB_x, min_point_OBB_y, max_point_OBB_z]
-    corner_5 = [max_point_OBB_x, min_point_OBB_y, min_point_OBB_z]
-    corner_6 = [max_point_OBB_x, max_point_OBB_y, min_point_OBB_z]
-    corner_7 = max_point_OBB[0]
-    corner_8 = [max_point_OBB_x, min_point_OBB_y, max_point_OBB_z]
+    corner_1_obb = min_point_OBB[0]
+    corner_2_obb = [min_point_OBB_x, max_point_OBB_y, min_point_OBB_z]
+    corner_3_obb = [min_point_OBB_x, max_point_OBB_y, max_point_OBB_z]
+    corner_4_obb = [min_point_OBB_x, min_point_OBB_y, max_point_OBB_z]
+    corner_5_obb = [max_point_OBB_x, min_point_OBB_y, min_point_OBB_z]
+    corner_6_obb = [max_point_OBB_x, max_point_OBB_y, min_point_OBB_z]
+    corner_7_obb = max_point_OBB[0]
+    corner_8_obb = [max_point_OBB_x, min_point_OBB_y, max_point_OBB_z]
     
-    corners = np.array([corner_1, corner_2, corner_3, corner_4, corner_5, corner_6, corner_7, corner_8]).reshape((8,3))
+    corners = np.array([corner_1_obb, corner_2_obb, corner_3_obb, corner_4_obb, corner_5_obb, corner_6_obb, corner_7_obb, corner_8_obb]).reshape((8,3))
     print('corners = {}'.format(corners))
     corners_rot = np.matmul(corners, rotational_matrix_OBB)
     print('corners_rot = {}'.format(corners_rot))
@@ -92,6 +93,76 @@ def main():
     viewer.SetPointCloudRenderingProperties(pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 17, bytes(1))
     pccolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(obb, 0,255,0)
     viewer.AddPointCloud_ColorHandler(obb, pccolor, bytes(4))
+
+
+    min_point_AABB_x = min_point_AABB[0][0]
+    min_point_AABB_y = min_point_AABB[0][1]
+    min_point_AABB_z = min_point_AABB[0][2]
+    max_point_AABB_x = max_point_AABB[0][0]
+    max_point_AABB_y = max_point_AABB[0][1]
+    max_point_AABB_z = max_point_AABB[0][2]
+
+    corner_1_aabb = min_point_AABB[0]
+    corner_2_aabb = [min_point_AABB_x, max_point_AABB_y, min_point_AABB_z]
+    corner_3_aabb = [min_point_AABB_x, max_point_AABB_y, max_point_AABB_z]
+    corner_4_aabb = [min_point_AABB_x, min_point_AABB_y, max_point_AABB_z]
+    corner_5_aabb = [max_point_AABB_x, min_point_AABB_y, min_point_AABB_z]
+    corner_6_aabb = [max_point_AABB_x, max_point_AABB_y, min_point_AABB_z]
+    corner_7_aabb = max_point_AABB[0]
+    corner_8_aabb = [max_point_AABB_x, min_point_AABB_y, max_point_AABB_z]
+    
+    corners_aabb = np.array([corner_1_aabb, corner_2_aabb, corner_3_aabb, corner_4_aabb, \
+        corner_5_aabb, corner_6_aabb, corner_7_aabb, corner_8_aabb]).reshape((8,3))
+
+    ######
+
+
+    cloud_test = o3d.geometry.PointCloud()
+    cloud_test.points = o3d.utility.Vector3dVector(points)
+    colors_arr = np.array([[255],[0],[255]])
+    cloud_test.paint_uniform_color(colors_arr)
+    o3d_obb_instance = o3d.geometry.OrientedBoundingBox()
+    o3d_obb = o3d_obb_instance.create_from_points(cloud_test.points)
+    o3d_aabb_instance = o3d.geometry.AxisAlignedBoundingBox()
+    # aabb_color = (colors_arr.astype(float)) / 255.0
+    # o3d_aabb_instance.color = aabb_color
+    o3d_aabb = o3d_aabb_instance.create_from_points(cloud_test.points)
+    #o3d_aabb = cloud_test.get_axis_aligned_bounding_box()
+    mesh_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.8, origin=[0, 0, 0])
+
+
+    pcl_lines = [
+        [0, 1],
+        [0, 3],
+        [1, 2],
+        [2, 3],
+        [0, 4],
+        [1, 5],
+        [3, 7],
+        [2, 6],
+        [4, 5],
+        [4, 7],
+        [5, 6],
+        [6, 7],
+    ]
+    colors_obb = [[1, 0, 0] for i in range(len(pcl_lines))]
+    pcl_obb_line_set = o3d.geometry.LineSet(
+        points=o3d.utility.Vector3dVector(corners_obb),
+        lines=o3d.utility.Vector2iVector(pcl_lines),
+    )
+    pcl_obb_line_set.colors = o3d.utility.Vector3dVector(colors_obb)
+
+
+    colors_aabb = [[0, 1, 0] for i in range(len(pcl_lines))]
+    pcl_aabb_line_set = o3d.geometry.LineSet(
+        points=o3d.utility.Vector3dVector(corners_aabb),
+        lines=o3d.utility.Vector2iVector(pcl_lines),
+    )
+    pcl_aabb_line_set.colors = o3d.utility.Vector3dVector(colors_aabb)
+    o3d.visualization.draw_geometries([cloud_test, o3d_obb, pcl_aabb_line_set, pcl_obb_line_set, mesh_frame])
+
+
+    #######
 
     # Eigen::Vector3f position (position_OBB.x, position_OBB.y, position_OBB.z);
     # Eigen::Quaternionf quat (rotational_matrix_OBB);
