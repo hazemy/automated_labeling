@@ -1,0 +1,16 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/eigen/test/klu_support.cpp"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"BuildOfficial"
+		],
+		"name" : "klu_support_1"
+	}
+}

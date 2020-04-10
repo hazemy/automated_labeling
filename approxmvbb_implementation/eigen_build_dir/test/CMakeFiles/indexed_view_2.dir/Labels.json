@@ -1,0 +1,16 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/eigen/test/indexed_view.cpp"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"BuildOfficial"
+		],
+		"name" : "indexed_view_2"
+	}
+}

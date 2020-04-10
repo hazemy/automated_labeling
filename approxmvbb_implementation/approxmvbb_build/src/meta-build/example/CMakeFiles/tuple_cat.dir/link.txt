@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11 -ftemplate-backtrace-limit=0 -Wall -Wextra -pedantic -Werror -pedantic-errors -Wno-error=deprecated-declarations -Wno-missing-field-initializers -Wno-unused-parameter   CMakeFiles/tuple_cat.dir/tuple_cat.cpp.o  -o tuple_cat 

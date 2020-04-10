@@ -1,0 +1,17 @@
+[
+{
+  "directory": "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/src/meta-build/example",
+  "command": "/usr/bin/c++   -I/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/src/meta/include   -std=c++11 -ftemplate-backtrace-limit=0 -Wall -Wextra -pedantic -Werror -pedantic-errors -Wno-error=deprecated-declarations -Wno-missing-field-initializers -Wno-unused-parameter   -o CMakeFiles/tutorial_snippets.dir/tutorial_snippets.cpp.o -c /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/src/meta/example/tutorial_snippets.cpp",
+  "file": "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/src/meta/example/tutorial_snippets.cpp"
+},
+{
+  "directory": "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/src/meta-build/example",
+  "command": "/usr/bin/c++   -I/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/src/meta/include   -std=c++11 -ftemplate-backtrace-limit=0 -Wall -Wextra -pedantic -Werror -pedantic-errors -Wno-error=deprecated-declarations -Wno-missing-field-initializers -Wno-unused-parameter   -o CMakeFiles/tuple_cat.dir/tuple_cat.cpp.o -c /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/src/meta/example/tuple_cat.cpp",
+  "file": "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/src/meta/example/tuple_cat.cpp"
+},
+{
+  "directory": "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/src/meta-build/test",
+  "command": "/usr/bin/c++   -I/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/src/meta/include   -std=c++11 -ftemplate-backtrace-limit=0 -Wall -Wextra -pedantic -Werror -pedantic-errors -Wno-error=deprecated-declarations -Wno-missing-field-initializers -Wno-unused-parameter   -o CMakeFiles/test.meta.dir/meta.cpp.o -c /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/src/meta/test/meta.cpp",
+  "file": "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/src/meta/test/meta.cpp"
+}
+]

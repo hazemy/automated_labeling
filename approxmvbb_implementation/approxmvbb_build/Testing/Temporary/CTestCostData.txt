@@ -1,0 +1,6 @@
+ApproxMVBBTest-ConvexHull 1 0.0225917
+ApproxMVBBTest-MinAreaRect 1 0.0570059
+ApproxMVBBTest-Diameter 1 0.0132033
+ApproxMVBBTest-DiameterOOBB 1 9.30099
+ApproxMVBBTest-MVBB 1 174.18
+---

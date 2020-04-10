@@ -1,0 +1,16 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/eigen/test/vectorization_logic.cpp"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"BuildOfficial"
+		],
+		"name" : "vectorization_logic_2"
+	}
+}

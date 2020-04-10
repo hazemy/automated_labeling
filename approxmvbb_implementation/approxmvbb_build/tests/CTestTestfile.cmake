@@ -1,0 +1,17 @@
+# CMake generated Testfile for 
+# Source directory: /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_src/ApproxMVBB/tests
+# Build directory: /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/tests
+# 
+# This file includes the relevant testing commands required for 
+# testing this directory and lists subdirectories to be tested as well.
+add_test(ApproxMVBBTest-ConvexHull "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/tests/ApproxMVBBTest-ConvexHull")
+set_tests_properties(ApproxMVBBTest-ConvexHull PROPERTIES  _BACKTRACE_TRIPLES "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_src/ApproxMVBB/tests/CMakeLists.txt;82;add_test;/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_src/ApproxMVBB/tests/CMakeLists.txt;88;defineTarget;/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_src/ApproxMVBB/tests/CMakeLists.txt;0;")
+add_test(ApproxMVBBTest-MinAreaRect "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/tests/ApproxMVBBTest-MinAreaRect")
+set_tests_properties(ApproxMVBBTest-MinAreaRect PROPERTIES  _BACKTRACE_TRIPLES "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_src/ApproxMVBB/tests/CMakeLists.txt;82;add_test;/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_src/ApproxMVBB/tests/CMakeLists.txt;92;defineTarget;/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_src/ApproxMVBB/tests/CMakeLists.txt;0;")
+add_test(ApproxMVBBTest-Diameter "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/tests/ApproxMVBBTest-Diameter")
+set_tests_properties(ApproxMVBBTest-Diameter PROPERTIES  _BACKTRACE_TRIPLES "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_src/ApproxMVBB/tests/CMakeLists.txt;82;add_test;/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_src/ApproxMVBB/tests/CMakeLists.txt;95;defineTarget;/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_src/ApproxMVBB/tests/CMakeLists.txt;0;")
+add_test(ApproxMVBBTest-DiameterOOBB "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/tests/ApproxMVBBTest-DiameterOOBB")
+set_tests_properties(ApproxMVBBTest-DiameterOOBB PROPERTIES  _BACKTRACE_TRIPLES "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_src/ApproxMVBB/tests/CMakeLists.txt;82;add_test;/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_src/ApproxMVBB/tests/CMakeLists.txt;99;defineTarget;/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_src/ApproxMVBB/tests/CMakeLists.txt;0;")
+add_test(ApproxMVBBTest-MVBB "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/tests/ApproxMVBBTest-MVBB")
+set_tests_properties(ApproxMVBBTest-MVBB PROPERTIES  _BACKTRACE_TRIPLES "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_src/ApproxMVBB/tests/CMakeLists.txt;82;add_test;/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_src/ApproxMVBB/tests/CMakeLists.txt;103;defineTarget;/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_src/ApproxMVBB/tests/CMakeLists.txt;0;")
+subdirs("../thirdparty/googletest-build")

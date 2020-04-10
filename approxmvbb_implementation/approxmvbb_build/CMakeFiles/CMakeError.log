@@ -1,0 +1,321 @@
+Performing C SOURCE FILE Test HAVE__FPU_SETCW failed with the following output:
+Change Dir: /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9b248/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9b248.dir/build.make CMakeFiles/cmTC_9b248.dir/build
+make[1]: Entering directory '/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9b248.dir/src.c.o
+/usr/bin/cc    -DHAVE__FPU_SETCW   -o CMakeFiles/cmTC_9b248.dir/src.c.o   -c /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c: In function ‘div’:
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c:10:5: warning: implicit declaration of function ‘_fpu_getcw’ [-Wimplicit-function-declaration]
+     _fpu_getcw(fpu_oldcw);
+     ^
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c:12:5: warning: implicit declaration of function ‘_fpu_setcw’ [-Wimplicit-function-declaration]
+     _fpu_setcw(fpu_cw);
+     ^
+Linking C executable cmTC_9b248
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9b248.dir/link.txt --verbose=1
+/usr/bin/cc    -DHAVE__FPU_SETCW    CMakeFiles/cmTC_9b248.dir/src.c.o  -o cmTC_9b248 
+CMakeFiles/cmTC_9b248.dir/src.c.o: In function `div':
+src.c:(.text+0x1e): undefined reference to `_fpu_getcw'
+src.c:(.text+0x3c): undefined reference to `_fpu_setcw'
+src.c:(.text+0x5b): undefined reference to `_fpu_setcw'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_9b248.dir/build.make:97: recipe for target 'cmTC_9b248' failed
+make[1]: *** [cmTC_9b248] Error 1
+make[1]: Leaving directory '/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_9b248/fast' failed
+make: *** [cmTC_9b248/fast] Error 2
+
+Return value: 1
+Source file was:
+
+  #include <stdio.h>
+  #include <string.h>
+  #include <fpu_control.h>
+ 
+  double div (double a, double b) {
+    fpu_control_t fpu_oldcw, fpu_cw;
+    volatile double result;
+ 
+    _fpu_getcw(fpu_oldcw);
+    fpu_cw = (fpu_oldcw & ~_FPU_EXTENDED & ~_FPU_SINGLE) | _FPU_DOUBLE;
+    _fpu_setcw(fpu_cw);
+    result = a / b;
+    _fpu_setcw(fpu_oldcw);
+    return result;
+  }
+ 
+  int main (int argc, char **argv) {
+    double d = div (2877.0, 1000000.0);
+    char buf[255];
+    sprintf(buf, "%.30f", d);
+    // see if the result is actually in double precision
+    return strncmp(buf, "0.00287699", 10) == 0 ? 0 : 1;
+  }
+ 
+Performing C SOURCE FILE Test HAVE_FPSETPREC failed with the following output:
+Change Dir: /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_17ef3/fast"
+/usr/bin/make -f CMakeFiles/cmTC_17ef3.dir/build.make CMakeFiles/cmTC_17ef3.dir/build
+make[1]: Entering directory '/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_17ef3.dir/src.c.o
+/usr/bin/cc    -DHAVE_FPSETPREC   -o CMakeFiles/cmTC_17ef3.dir/src.c.o   -c /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c:4:30: fatal error: machine/ieeefp.h: No such file or directory
+compilation terminated.
+CMakeFiles/cmTC_17ef3.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_17ef3.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_17ef3.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_17ef3/fast' failed
+make: *** [cmTC_17ef3/fast] Error 2
+
+Return value: 1
+Source file was:
+
+  #include <stdio.h>
+  #include <string.h>
+  #include <machine/ieeefp.h>
+ 
+  double div (double a, double b) {
+    fp_prec_t fpu_oldprec;
+    volatile double result;
+ 
+    fpu_oldprec = fpgetprec();
+    fpsetprec(FP_PD);
+    result = a / b;
+    fpsetprec(fpu_oldprec);
+    return result;
+  }
+ 
+  int main (int argc, char **argv) {
+    double d = div (2877.0, 1000000.0);
+    char buf[255];
+    sprintf(buf, "%.30f", d);
+    // see if the result is actually in double precision
+    return strncmp(buf, "0.00287699", 10) == 0 ? 0 : 1;
+  }
+ 
+Performing C SOURCE FILE Test HAVE__CONTROLFP failed with the following output:
+Change Dir: /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_0bd0b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0bd0b.dir/build.make CMakeFiles/cmTC_0bd0b.dir/build
+make[1]: Entering directory '/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0bd0b.dir/src.c.o
+/usr/bin/cc    -DHAVE__CONTROLFP   -o CMakeFiles/cmTC_0bd0b.dir/src.c.o   -c /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c: In function ‘div’:
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c:10:17: warning: implicit declaration of function ‘_controlfp’ [-Wimplicit-function-declaration]
+     fpu_oldcw = _controlfp(0, 0);
+                 ^
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c:11:16: error: ‘_PC_53’ undeclared (first use in this function)
+     _controlfp(_PC_53, _MCW_PC);
+                ^
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c:11:16: note: each undeclared identifier is reported only once for each function it appears in
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c:11:24: error: ‘_MCW_PC’ undeclared (first use in this function)
+     _controlfp(_PC_53, _MCW_PC);
+                        ^
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c: In function ‘main’:
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c:19:7: error: invalid preprocessing directive #not
+     # not available on x64 platforms
+       ^
+CMakeFiles/cmTC_0bd0b.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_0bd0b.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_0bd0b.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_0bd0b/fast' failed
+make: *** [cmTC_0bd0b/fast] Error 2
+
+Return value: 1
+Source file was:
+
+  #include <stdio.h>
+  #include <string.h>
+  #include <float.h>
+ 
+  double div (double a, double b) {
+    unsigned int fpu_oldcw;
+    volatile double result;
+ 
+    fpu_oldcw = _controlfp(0, 0);
+    _controlfp(_PC_53, _MCW_PC);
+    result = a / b;
+    _controlfp(fpu_oldcw, _MCW_PC);
+    return result;
+  }
+ 
+  int main (int argc, char **argv) {
+    
+    # not available on x64 platforms
+    #if defined(_MSC_VER) && defined(_WIN64 )
+        return 1;
+    #else
+    
+    double d = div (2877.0, 1000000.0);
+    char buf[255];
+    sprintf(buf, "%.30f", d);
+    // see if the result is actually in double precision
+    return strncmp(buf, "0.00287699", 10) == 0 ? 0 : 1;
+	#endif
+  }
+ 
+Performing C SOURCE FILE Test HAVE__CONTROLFP_S failed with the following output:
+Change Dir: /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_7aadc/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7aadc.dir/build.make CMakeFiles/cmTC_7aadc.dir/build
+make[1]: Entering directory '/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_7aadc.dir/src.c.o
+/usr/bin/cc    -DHAVE__CONTROLFP_S   -o CMakeFiles/cmTC_7aadc.dir/src.c.o   -c /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c: In function ‘div’:
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c:10:5: warning: implicit declaration of function ‘_controlfp_s’ [-Wimplicit-function-declaration]
+     _controlfp_s(&fpu_cw, 0, 0);
+     ^
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c:12:27: error: ‘_PC_53’ undeclared (first use in this function)
+     _controlfp_s(&fpu_cw, _PC_53, _MCW_PC);
+                           ^
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c:12:27: note: each undeclared identifier is reported only once for each function it appears in
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c:12:35: error: ‘_MCW_PC’ undeclared (first use in this function)
+     _controlfp_s(&fpu_cw, _PC_53, _MCW_PC);
+                                   ^
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c: In function ‘main’:
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c:19:7: error: invalid preprocessing directive #not
+     # not available on x64 platforms
+       ^
+CMakeFiles/cmTC_7aadc.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_7aadc.dir/src.c.o' failed
+make[1]: *** [CMakeFiles/cmTC_7aadc.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_7aadc/fast' failed
+make: *** [cmTC_7aadc/fast] Error 2
+
+Return value: 1
+Source file was:
+
+  #include <stdio.h>
+  #include <string.h>
+  #include <float.h>
+ 
+  double div (double a, double b) {
+    unsigned int fpu_oldcw, fpu_cw;
+    volatile double result;
+ 
+    _controlfp_s(&fpu_cw, 0, 0);
+    fpu_oldcw = fpu_cw;
+    _controlfp_s(&fpu_cw, _PC_53, _MCW_PC);
+    result = a / b;
+    _controlfp_s(&fpu_cw, fpu_oldcw, _MCW_PC);
+    return result;
+  }
+ 
+  int main (int argc, char **argv) {
+    # not available on x64 platforms
+    #if defined(_MSC_VER) && defined(_WIN64 )
+        return 1;
+    #else
+    double d = div (2877.0, 1000000.0);
+    char buf[255];
+    sprintf(buf, "%.30f", d);
+    // see if the result is actually in double precision
+    return strncmp(buf, "0.00287699", 10) == 0 ? 0 : 1;
+    #endif
+  }
+ 
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b4f8b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b4f8b.dir/build.make CMakeFiles/cmTC_b4f8b.dir/build
+make[1]: Entering directory '/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b4f8b.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_b4f8b.dir/CheckSymbolExists.c.o   -c /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_b4f8b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b4f8b.dir/link.txt --verbose=1
+/usr/bin/cc        CMakeFiles/cmTC_b4f8b.dir/CheckSymbolExists.c.o  -o cmTC_b4f8b -rdynamic 
+CMakeFiles/cmTC_b4f8b.dir/CheckSymbolExists.c.o: In function `main':
+CheckSymbolExists.c:(.text+0x16): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_b4f8b.dir/build.make:97: recipe for target 'cmTC_b4f8b' failed
+make[1]: *** [cmTC_b4f8b] Error 1
+make[1]: Leaving directory '/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_b4f8b/fast' failed
+make: *** [cmTC_b4f8b/fast] Error 2
+
+File /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_992e2/fast"
+/usr/bin/make -f CMakeFiles/cmTC_992e2.dir/build.make CMakeFiles/cmTC_992e2.dir/build
+make[1]: Entering directory '/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_992e2.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_992e2.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_992e2
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_992e2.dir/link.txt --verbose=1
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_992e2.dir/CheckFunctionExists.c.o  -o cmTC_992e2 -rdynamic -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_992e2.dir/build.make:97: recipe for target 'cmTC_992e2' failed
+make[1]: *** [cmTC_992e2] Error 1
+make[1]: Leaving directory '/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_992e2/fast' failed
+make: *** [cmTC_992e2/fast] Error 2
+
+
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_bbd57/fast && /usr/bin/make -f CMakeFiles/cmTC_bbd57.dir/build.make CMakeFiles/cmTC_bbd57.dir/build
+make[1]: Entering directory '/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_bbd57.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_bbd57.dir/src.c.o   -c /home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_bbd57
+/opt/cmake-3.17.0-Linux-x86_64/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bbd57.dir/link.txt --verbose=1
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_bbd57.dir/src.c.o  -o cmTC_bbd57 
+CMakeFiles/cmTC_bbd57.dir/src.c.o: In function `main':
+src.c:(.text+0x3c): undefined reference to `pthread_create'
+src.c:(.text+0x48): undefined reference to `pthread_detach'
+src.c:(.text+0x54): undefined reference to `pthread_cancel'
+src.c:(.text+0x65): undefined reference to `pthread_join'
+src.c:(.text+0x79): undefined reference to `pthread_atfork'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_bbd57.dir/build.make:103: recipe for target 'cmTC_bbd57' failed
+make[1]: *** [cmTC_bbd57] Error 1
+make[1]: Leaving directory '/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/approxmvbb_build/CMakeFiles/CMakeTmp'
+Makefile:138: recipe for target 'cmTC_bbd57/fast' failed
+make: *** [cmTC_bbd57/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+

@@ -1,0 +1,16 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/eigen/test/prec_inverse_4x4.cpp"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"BuildOfficial"
+		],
+		"name" : "prec_inverse_4x4_1"
+	}
+}

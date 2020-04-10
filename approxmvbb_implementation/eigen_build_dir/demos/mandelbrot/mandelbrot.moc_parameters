@@ -1,0 +1,6 @@
+-I/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/eigen
+-I/usr/include/qt4
+-DNDEBUG
+-o
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/eigen_build_dir/demos/mandelbrot/mandelbrot.moc
+/home/flw/master_thesis/automated_labeling/approxmvbb_implementation/eigen/demos/mandelbrot/mandelbrot.h
