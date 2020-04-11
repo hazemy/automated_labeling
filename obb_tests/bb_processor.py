@@ -4,6 +4,7 @@ from pcl.pcl_visualization import *
 from pyquaternion import Quaternion
 import numpy as np
 import open3d as o3d
+from math import sin, cos, tan
 
 def main():
     points = [[1,2,3], [5,3,6], [6,4,3], [3,7,2], [2,3,1], [4,5,6]]
@@ -82,12 +83,12 @@ def main():
     corner_8_obb = [max_point_OBB_x, min_point_OBB_y, max_point_OBB_z]
     
     corners = np.array([corner_1_obb, corner_2_obb, corner_3_obb, corner_4_obb, corner_5_obb, corner_6_obb, corner_7_obb, corner_8_obb]).reshape((8,3))
-    print('corners = {}'.format(corners))
+    #print('corners = {}'.format(corners))
     corners_rot = np.matmul(corners, rotational_matrix_OBB)
-    print('corners_rot = {}'.format(corners_rot))
+    #print('corners_rot = {}'.format(corners_rot))
     corners_obb = corners_rot + position_OBB
-    print('position obb = {}'.format(position_OBB))
-    print('corners_obb = {}'.format(corners_obb))
+    #print('position obb = {}'.format(position_OBB))
+    #print('corners_obb = {}'.format(corners_obb))
 
     obb = pcl.PointCloud(corners_obb)
     viewer.SetPointCloudRenderingProperties(pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 17, bytes(1))
@@ -123,10 +124,14 @@ def main():
     cloud_test.paint_uniform_color(colors_arr)
     o3d_obb_instance = o3d.geometry.OrientedBoundingBox()
     o3d_obb = o3d_obb_instance.create_from_points(cloud_test.points)
+    o3d_obb_color = np.array([[0],[0],[255]])
+    o3d_obb.color = o3d_obb_color
     o3d_aabb_instance = o3d.geometry.AxisAlignedBoundingBox()
     # aabb_color = (colors_arr.astype(float)) / 255.0
     # o3d_aabb_instance.color = aabb_color
     o3d_aabb = o3d_aabb_instance.create_from_points(cloud_test.points)
+    o3d_aabb_color = np.array([[255],[0],[0]])
+    o3d_aabb.color = o3d_aabb_color
     #o3d_aabb = cloud_test.get_axis_aligned_bounding_box()
     mesh_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.8, origin=[0, 0, 0])
 
@@ -159,7 +164,44 @@ def main():
         lines=o3d.utility.Vector2iVector(pcl_lines),
     )
     pcl_aabb_line_set.colors = o3d.utility.Vector3dVector(colors_aabb)
-    o3d.visualization.draw_geometries([cloud_test, o3d_obb, pcl_aabb_line_set, pcl_obb_line_set, mesh_frame])
+    #o3d.visualization.draw_geometries([cloud_test, o3d_obb, o3d_aabb, pcl_aabb_line_set, pcl_obb_line_set, mesh_frame])
+
+
+    desired_rot = np.array([[cos(0.78), -sin(0.78), 0], [sin(0.78), cos(0.78), 0], [0, 0, 1]])
+    o3d_aabb_converted = o3d.geometry.OrientedBoundingBox().create_from_axis_aligned_bounding_box(o3d_aabb)
+    o3d_aabb_rotated = o3d_aabb_converted.rotate(desired_rot)
+    o3d.visualization.draw_geometries([cloud_test, o3d_aabb_rotated, o3d_aabb, mesh_frame])
+
+
+    #o3d_aabb_instance_mod = o3d.geometry.AxisAlignedBoundingBox()
+    #o3d_aabb_mod = o3d_aabb_instance_mod.create_from_points(cloud_test.points)
+    #print(np.asarray(o3d_aabb_mod.get_box_points()))
+    
+
+    # o3d_aabb_corners = np.asarray(o3d_aabb.get_box_points())
+    # o3d_aabb_corners_rot = np.matmul(o3d_aabb_corners, desired_rot)
+    # aabb_lines = [
+    #     [0, 1],
+    #     [0, 2],
+    #     [1, 3],
+    #     [2, 3],
+    #     [4, 5],
+    #     [4, 6],
+    #     [5, 7],
+    #     [6, 7],
+    #     [0, 4],
+    #     [1, 5],
+    #     [2, 6],
+    #     [3, 7],
+    # ]
+    # o3d_aabb_rot_colors = [[0, 1, 0] for i in range(len(pcl_lines))]
+    # o3d_aabb_rot_line_set = o3d.geometry.LineSet(
+    #     points=o3d.utility.Vector3dVector(o3d_aabb_corners_rot),
+    #     lines=o3d.utility.Vector2iVector(pcl_lines),
+    # )
+    # o3d_aabb_rot_line_set.colors = o3d.utility.Vector3dVector(o3d_aabb_rot_colors)
+    # o3d.visualization.draw_geometries([cloud_test, o3d_aabb_rot_line_set, o3d_aabb, mesh_frame])
+
 
 
     #######
